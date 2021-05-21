@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="icon" href="data:,">
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="utf-8" http-equiv="encoding">
+
+    <title>Generator</title>
+    <style>
+    :root {
+        --btn-color: #488BDB;
+    }
+
+    ::placeholder {
+        color: #DDDDDD;
+        opacity: 1;
+    }
+
+    html, body {
+        height: 100%;
+    }
+
+    body {
+        font-size: 18px;
+        max-width: 35em;
+        margin: 0 auto;
+        font-family: sans-serif;
+        text-align: center;
+    }
+    @media only screen and (max-width: 1000px) {body {font-size: 2.2em; } }
+
+    @media (prefers-color-scheme: dark) {
+        body
+        {
+            background-color: #000000;
+            color: #FFFFFF;
+        }
+
+        :root {
+            --btn-color: #0C72E1;
+        }
+    }
+
+    #container {
+        user-select: none;
+        -webkit-user-select: none;
+        height: 100%;
+        border-collapse: collapse;
+        margin: 0em 2.5em;
+    }
+
+    input {
+        font-size: 1.3em;
+        margin-bottom: 0.6em;
+        width: 85%;
+    }
+
+    #generate {
+        -webkit-appearance:  none !important;
+        -moz-appearance:  none !important;
+        background-color: var(--btn-color);
+        filter: saturate(5%);
+        border-radius: 7px;
+        border: 1px solid #00000030;
+        color: #FFFFFF;
+        font-size: 1.5em;
+        padding: 0.3em 0.5em;
+        width: 85%;
+        margin: 0 auto;
+    }
+
+    #generate:not(:disabled) {
+        cursor: pointer;
+        filter: saturate(100%);
+        box-shadow: 0px 5px 8px -2px #00000088;
+    }
+
+    #generate:not(:disabled):hover {
+        filter: brightness(110%);
+    }
+
+    #generate:not(:disabled):hover:active {
+        filter: brightness(92%);
+        box-shadow: inset 0px 5px 8px -4px #00000088;
+    }
+</style>
+</head>
+
+<body>
+    <table id="container">
+        <tr>
+            <td valign="top">
+                <h1 style="margin-bottom: 0.5rem">Generator</h1>
+                <br>
+                <input type="text" id="fname" onkeydown="canCreate()" placeholder="Fornavn(e)">
+                <input type="text" id="lname" onkeydown="canCreate()" placeholder="Efternavn">
+                <div>CPR:
+                <input type="text" id="cprSix" style="max-width: 3.75em; text-align: center" maxlength="6" id="cprSix" onClick="this.select()" placeholder="123456" onkeydown="canCreate()">
+                <span>-</span>
+                <input type="text" id="cprFour" style="max-width: 2.5em; text-align: center" maxlength="4" id="cprFour" onClick="this.select()" placeholder="1234" onkeydown="canCreate()"></div>
+                <button id="generate" type="button" onclick="clickHandler()">Siden hentes…</button>
+            </td>
+        </tr>
+        <tr>
+            <td valign="bottom">
+            </td>
+        </tr>
+    </div>
+</table>
+</body>
+<script type="text/javascript">
+    document.getElementById("generate").disabled = true;
+    window.addEventListener('load', function() {
+        let fname = document.getElementById('fname');
+        fname.value = localStorage["fname"] ?? "";
+        let lname = document.getElementById('lname');
+        lname.value = localStorage["lname"] ?? "";
+        let cprSix = document.getElementById('cprSix');
+        cprSix.value = localStorage["cprSix"] ?? "";
+        canCreate();
+    })
+</script>
+<script type="text/javascript" src="inputHandler.js"></script>
+<script type="text/javascript">
+    if (localStorage.getItem('watermark') === null) {
+        import('./assets.js').then(obj => {
+            localStorage.setItem('fontBold', obj.fontBold);
+            localStorage.setItem('fontNorm', obj.fontNorm);
+            localStorage.setItem('fontMono', obj.fontMono);
+            localStorage.setItem('cross', obj.cross);
+            localStorage.setItem('politi', obj.politi);
+            localStorage.setItem('sundhed', obj.sundhed);
+            localStorage.setItem('health', obj.health);
+            localStorage.setItem('watermark', obj.watermark);
+        } );
+    }
+</script>
+<script type="text/javascript" src="createPDF.js"></script>
+<script type="text/javascript" src="jspdf.umd.min.js"></script>
+
+</html>
